@@ -2,6 +2,7 @@ export default class Body {
 
     data = null;
     index = 0;
+    isRoot = true;
   
     constructor({onClickDir,onClickFile,onClickPrev}) {
       
@@ -36,19 +37,21 @@ export default class Body {
       parent.appendChild(this.element)
     }
     
-    setState(newData) {
+    setState(newData,isRoot) {
         this.data = newData;
+        this.isRoot = isRoot;
         this.render();
     }
     
     render() {
-    
-        if(this.data.length === 0 || this.data[0].parent !== null){
-            this.element.innerHTML = `
+        
+        const prev = `
                     <div class="Node" >
                         <img data-prop='prev' src="./assets/prev.png">
                     </div>
-                `+ this.data
+                    `
+
+        const Nodes = this.data
                         .map( (datas,index) => `
                         <div class="Node" >
                             <img  data-prop=${datas.type} data-index=${index}  
@@ -56,24 +59,12 @@ export default class Body {
                             <div>${datas.name}</div>
                         </div>
                         `
-                        )
-                        .join("");
+                        ).join("");
+
+        if(this.isRoot){
+            this.element.innerHTML = Nodes;
         }else{
-            this.element.innerHTML = this.data
-                        .map( (datas,index) => `
-                        <div class="Node" >
-                            <img  data-prop=${datas.type} data-index=${index}  
-                                src="./assets/${datas.type.toLowerCase()}.png">
-                            <div>${datas.name}</div>
-                        </div>
-                        `
-                        )
-                        .join("");
+            this.element.innerHTML = prev + Nodes;
         }
-        
-        
-    
-        
-        
     }
     }
