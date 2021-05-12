@@ -2,7 +2,7 @@ export default class Dialog {
 
     data = null;
   
-    constructor({data}) {
+    constructor() {
   
       const TEMPLATE = document.createElement("template");
       
@@ -14,8 +14,12 @@ export default class Dialog {
               `
   
       this.element = TEMPLATE.content.firstElementChild;
-      this.data = data;
-      this.render();
+      
+      const overlay = this.element.querySelector('.overlay');
+
+      overlay.onclick = () => {
+         this.element.style.display = 'none'
+       }
   
       window.addEventListener("keyup", e => {
         if(e.keyCode === 27){
@@ -36,21 +40,12 @@ export default class Dialog {
   
     render() {
   
-        if(!this.data.visible){
-            this.element.style.display = 'none'
-        }else{
-            this.content = document.querySelector('._content');
-            const img = this.data.image[0] === '/' ? this.data.image.slice(1) : this.data.image;
-            this.content.innerHTML = `
-                <img width="700px" height="700px" src="https://fe-dev-matching-2021-03-serverlessdeploymentbuck-t3kpj3way537.s3.ap-northeast-2.amazonaws.com/public/${img}">
-            `
-            this.element.style.display = 'block'
-        }
-        
-        const overlay = this.element.querySelector('.overlay')
-  
-        overlay.onclick = () => {
-            this.element.style.display = 'none'
-        }
+        this.content = document.querySelector('._content');
+        const img = this.data.image[0] === '/' ? this.data.image.slice(1) : this.data.image;
+        this.content.innerHTML = `
+            <img width="700px" height="700px" src="https://fe-dev-matching-2021-03-serverlessdeploymentbuck-t3kpj3way537.s3.ap-northeast-2.amazonaws.com/public/${img}">
+        `
+        this.element.style.display = 'block'
+    
     }
   }
