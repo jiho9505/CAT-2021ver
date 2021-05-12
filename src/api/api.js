@@ -5,6 +5,7 @@ const API_ENDPOINT =
 const request = async url => {
   try {
       const response = await fetch(url);
+      if(!response.ok) throw new Error("Error 발생!")
       const data = response.json();
       return data;
   } catch(e) {
@@ -18,7 +19,8 @@ export const api = {
       const resp = await request(`${API_ENDPOINT}`)
       return {
         success: true,
-        data : resp
+        data : resp,
+        isRoot : true
       }
     }
     catch(e) {
@@ -34,7 +36,8 @@ export const api = {
       const resp = await request(`${API_ENDPOINT}/${id}`)
       return {
         success: true,
-        data : resp
+        data : resp,
+        isRoot : false
       }
     }
     catch(e) {
